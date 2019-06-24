@@ -30,6 +30,7 @@ body {
 
 .organisation {
   width: 100%;
+  border: 1px solid silver;
   border-radius: 4px;
   margin-bottom: 20px;
   padding-bottom: 10px;
@@ -37,7 +38,6 @@ body {
 
 .main {
   width: 98%;
-  border: 1px solid silver;
 }
 
 .member {
