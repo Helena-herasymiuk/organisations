@@ -49,7 +49,6 @@ class Main extends React.Component {
         <Search handleSearch={this.debounceEvent(this.handleSearch, 500)}/>
         <div> </div>
         <Organisation searchedOrgs={this.state.searchedOrgs}/>
-        <User />
 		  </main>
 	)}
 }

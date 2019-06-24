@@ -33,11 +33,25 @@ body {
   border: 1px solid silver;
   border-radius: 4px;
   margin-bottom: 20px;
+  padding-bottom: 10px;
 }
 
 .main {
   width: 98%;
   border: 1px solid silver;
+}
+
+.member {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  height: 35px;
+}
+
+.member_avatar {
+  height: 20px;
+  width: 20px;
+  margin: 3px;
 }
 
 input[type="text"] {

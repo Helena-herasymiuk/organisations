@@ -21,18 +21,26 @@ const OrgsService = {
   },
   async getMembers(login) {
     let result;
-    // return fetch(API_URL + '/orgs/' + login + "/members")
-    //   .then((response) => response.json())
-      const response = await fetch(API_URL + '/orgs/' + login + "/members");
-      console.log(API_URL + '/orgs/' + login + "/members")
-      return result = await response.json()
+    const response = await fetch(API_URL + '/orgs/' + login + "/members");
+    return result = await response.json()
   },
   getUser(login){
     return fetch(API_URL + '/users/' + login)
       .then((response) => response.json())
   },
-  async getUsersDetails(members){
+  async getUsersDetails(login){
+    const members = await OrgsService.getMembers(login);
     const promises = await members.map((member) => OrgsService.getUser(member.login));
+    return await Promise.all(promises)
+  },
+  async getFollow(login,follow) {
+    let result;
+    const response = await fetch(API_URL + '/users/' + login + "/" + follow);
+    return result = await response.json()
+  },
+  async getFollowDetails(login,follow){
+    const follows = await OrgsService.getFollow(login,follow);
+    const promises = await follows.map((person) => OrgsService.getUser(person.login));
     return await Promise.all(promises)
   }
 }
