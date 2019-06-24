@@ -3,10 +3,11 @@ import React from 'react';
 
 function Search(props) {
 	return(
-		<div>
+		<div className="search"> 
 		  <h1> Search </h1>
       <input type="text"
-             onChange={props.handleSearch}>
+             onChange={props.handleSearch}
+             autoFocus>
       </input>
 		</div>
 	)

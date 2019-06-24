@@ -2,7 +2,8 @@ import React from 'react';
 import Search from './main/Search'
 import Organisation from './main/Organisation'
 import User from './main/User'
-import PhonesService from './service'
+import OrgsService from './service'
+import utils from './utils'
 
 class Main extends React.Component {
     constructor() {
@@ -11,14 +12,21 @@ class Main extends React.Component {
       orgs: [],
       searchedOrgs: []
     }
-  
 	}
 
-  async componentDidMount() {
-    const orgs = await PhonesService.getAll()
-      this.setState({
-        orgs: orgs
-      })
+  debounceEvent(...args) {
+    this.debouncedEvent = utils.debounce(...args);
+    return event => {
+      event.persist();
+      return this.debouncedEvent(event);
+    }
+  }
+
+  componentDidMount() {
+    OrgsService.getAll()
+    .then(data=>{this.setState({
+        orgs: data
+      })})
   }
 
   handleSearch = (event) =>{
@@ -26,24 +34,21 @@ class Main extends React.Component {
     const filtredOrgs = this.state.orgs.filter((org) => {
       return org.login.toLowerCase().includes(target.toLowerCase());
     });
-    this.setState({
-        searchedOrgs: filtredOrgs
-    })
-  }
-
-  renderSearchedOrgs(){
-    const searched = this.state.searchedOrgs;
-    return searched.map((org, i ) => <div key={i}>{org.login}</div>);
-    console.log(searched)
-  }
+    OrgsService.getAllDetails(filtredOrgs)
+      .then(data=>{this.setState({
+        searchedOrgs: data
+        })
+      })
+      .catch((error) => {return []});
+  };
 
   render(){
-    console.log(this.state.searchedOrgs.login)
+     
 	  return(
-		  <main>
-        <Search handleSearch={this.handleSearch}/>
-        <div> {this.renderSearchedOrgs()}</div>
-        <Organisation />
+		  <main className="main">
+        <Search handleSearch={this.debounceEvent(this.handleSearch, 500)}/>
+        <div> </div>
+        <Organisation searchedOrgs={this.state.searchedOrgs}/>
         <User />
 		  </main>
 	)}
