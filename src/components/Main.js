@@ -1,11 +1,11 @@
 import React from 'react';
 import Search from './main/Search'
-import Organisation from './main/Organisation'
+import OrganisationList from './main/OrganisationList'
 import OrgsService from './service'
 import utils from './utils'
 
 class Main extends React.Component {
-    constructor() {
+  constructor() {
     super();
     this.state={
       orgs: [],
@@ -23,32 +23,29 @@ class Main extends React.Component {
 
   componentDidMount() {
     OrgsService.getAll()
-    .then(data=>{this.setState({
-      orgs: data
-    })})
+      .then(data => {
+        this.setState({ orgs: data })
+      });
   }
 
-  handleSearch = (event) =>{
-    const target =  event.target.value;
+  handleSearch = (event) => {
+    const value =  event.target.value.toLowerCase();
     const filtredOrgs = this.state.orgs.filter((org) => {
-      return org.login.toLowerCase().includes(target.toLowerCase());
+      return org.login.toLowerCase().includes(value);
     });
+
     OrgsService.getAllDetails(filtredOrgs)
-      .then(data=>{
-        this.setState({
-        searchedOrgs: data
-        })
+      .then(data => {
+        this.setState({ searchedOrgs: data })
       })
-      .catch((error) => {return []});
+      .catch((error) => []);
   };
 
-  render(){
-     
+  render(){   
 	  return(
 		  <main className="main">
         <Search handleSearch={this.debounceEvent(this.handleSearch, 500)}/>
-        <div> </div>
-        <Organisation searchedOrgs={this.state.searchedOrgs}/>
+        <OrganisationList searchedOrgs={this.state.searchedOrgs}/>
 		  </main>
 	)}
 }

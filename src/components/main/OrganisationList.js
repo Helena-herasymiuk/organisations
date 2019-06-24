@@ -1,7 +1,7 @@
 import React from 'react';
 import OrgsService from './../service'
 
-class Organisation extends React.Component {
+class OrganisationList extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -21,7 +21,7 @@ class Organisation extends React.Component {
     if(this.state.selectedOrg === selectedLogin){
       this.setState({
         selectedOrg: false,
-        members: []
+        members: [],
       })
       return;
     }
@@ -31,13 +31,11 @@ class Organisation extends React.Component {
     })
     
     OrgsService.getUsersDetails(selectedLogin)
-    .then(data=>{
-        if(data.length === 0){
+      .then(data=>{
+        if(data.length === 0) {
           data = ""
-        }
-        this.setState({
-          members: data
-        })
+        };
+        this.setState({ members: data });
       })
   }
 
@@ -49,12 +47,11 @@ class Organisation extends React.Component {
       return <p>Sorry, i'm searching</p>
     }
     return this.state.followers.map((person, i)=>{
-      return (
-        <p key={i}>{person.name}</p>
-    )})
+      return <p key={i}>{person.name}</p> 
+    })
   }
 
-    renderFollows = () => {
+  renderFollows = () => {
     if(!Array.isArray(this.state.follows)){
       return <p>Sorry, i don't know them</p>
     }
@@ -62,9 +59,8 @@ class Organisation extends React.Component {
       return <p>Sorry, i'm searching</p>
     }
     return this.state.follows.map((person, i)=>{
-      return (
-        <p key={i}>{person.name}</p>
-    )})
+      return <p key={i}>{person.name}</p> 
+    })
   }
 
   renderMembers = () => {
@@ -77,24 +73,23 @@ class Organisation extends React.Component {
     return this.state.members.map((member, i)=>{
       return (
         <>
-        <div  className="member"
-              key={i}>
-          <img alt="member avatar" 
-                     className="member_avatar"
-                     src={member.avatar_url}></img>
-          <p onClick={this.handleSelectUser}
-             className="member_name">
-            {member.name || member.login}
-          </p>
-        </div>
-        {(this.state.selectedUser &&
-           this.state.selectedUser === member.login)?(
-           <div className="member_info">
-              
-              <div> followers:{this.renderFollowers()} </div>
-              <div> follows:{this.renderFollows()} </div>
-           </div>
-           ):(" ")}
+          <div  className="member"
+                key={i}>
+            <img alt="member avatar" 
+                       className="member_avatar"
+                       src={member.avatar_url}></img>
+            <p onClick={this.handleSelectUser}
+               className="member_name">
+              {member.name || member.login}
+            </p>
+          </div>
+          {(this.state.selectedUser &&
+             this.state.selectedUser === member.login)?(
+             <div className="member_info">
+                <div> followers: {this.renderFollowers()}</div>
+                <div> follows: {this.renderFollows()}</div>
+             </div>
+             ):(" ")}
         </>
     )})
   }
@@ -117,22 +112,18 @@ class Organisation extends React.Component {
       })
     OrgsService.getFollowDetails(selectedLogin,"followers")
       .then(data=>{
-        if(data.length === 0){
+        if(data.length === 0) {
           data = ""
-        }
-        this.setState({
-          followers: data
-        })
+        };
+        this.setState({ followers: data })
       })
 
     OrgsService.getFollowDetails(selectedLogin,"following")
       .then(data=>{
-        if(data.length === 0){
+        if(data.length === 0) {
           data = ""
-        }
-        this.setState({
-          follows: data
-        })
+        };
+        this.setState({ follows: data })
       })
   }
 
@@ -160,11 +151,10 @@ class Organisation extends React.Component {
 	render() {
     return(
   		<div className="organisations">
-  		  <h1> Organisations </h1>
         {this.renderSearchedOrgs()}
   		</div>
 	  )
   }
 }
 
-export default Organisation;
+export default OrganisationList;
