@@ -1,7 +1,6 @@
 import React from 'react';
 import Search from './main/Search'
 import Organisation from './main/Organisation'
-import User from './main/User'
 import OrgsService from './service'
 import utils from './utils'
 
@@ -25,8 +24,8 @@ class Main extends React.Component {
   componentDidMount() {
     OrgsService.getAll()
     .then(data=>{this.setState({
-        orgs: data
-      })})
+      orgs: data
+    })})
   }
 
   handleSearch = (event) =>{
@@ -35,7 +34,8 @@ class Main extends React.Component {
       return org.login.toLowerCase().includes(target.toLowerCase());
     });
     OrgsService.getAllDetails(filtredOrgs)
-      .then(data=>{this.setState({
+      .then(data=>{
+        this.setState({
         searchedOrgs: data
         })
       })

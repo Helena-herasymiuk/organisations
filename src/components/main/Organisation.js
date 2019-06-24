@@ -32,15 +32,13 @@ class Organisation extends React.Component {
     
     OrgsService.getUsersDetails(selectedLogin)
     .then(data=>{
-      if(data.length === 0){
-        data = ""
-      }
+        if(data.length === 0){
+          data = ""
+        }
         this.setState({
           members: data
         })
-        console.log(data)
       })
-    console.log(selectedLogin)
   }
 
   renderFollowers = () => {
@@ -76,7 +74,6 @@ class Organisation extends React.Component {
     if(this.state.members.length === 0){
       return <p>Sorry, i'm searching</p>
     }
-    // emptyArraysCheck(this.state.members);
     return this.state.members.map((member, i)=>{
       return (
         <>
@@ -123,9 +120,9 @@ class Organisation extends React.Component {
         if(data.length === 0){
           data = ""
         }
-          this.setState({
-            followers: data
-          })
+        this.setState({
+          followers: data
+        })
       })
 
     OrgsService.getFollowDetails(selectedLogin,"following")
@@ -133,9 +130,9 @@ class Organisation extends React.Component {
         if(data.length === 0){
           data = ""
         }
-          this.setState({
-            follows: data
-          })
+        this.setState({
+          follows: data
+        })
       })
   }
 
@@ -156,7 +153,8 @@ class Organisation extends React.Component {
             </div>)
           :("")}
         </div>
-    )});
+      )
+    });
   }
 
 	render() {
@@ -165,17 +163,8 @@ class Organisation extends React.Component {
   		  <h1> Organisations </h1>
         {this.renderSearchedOrgs()}
   		</div>
-	)}
+	  )
+  }
 }
-
-// const emptyArraysCheck = (array) => {
-//   if(!Array.isArray(array)){
-//       return <p>Sorry, i don't know them</p>;
-
-//     }
-//   if(array.length === 0){
-//       return <p>Sorry, i'm searching</p>
-//     }
-// }
 
 export default Organisation;
