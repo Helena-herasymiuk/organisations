@@ -33,7 +33,7 @@ class OrganisationList extends React.Component {
     })
     
     OrgsService.getMembers(selectedLogin)
-      .then(data=>{
+      .then(data => {
         if(data.length === 0) {
           data = ""
         };
@@ -43,11 +43,11 @@ class OrganisationList extends React.Component {
   }
 
   handleSelectUser = (event) => {
-    const selected = this.state.members.filter(member=>{
+    const selected = this.state.members.filter(member => {
       return event.target.textContent ===  member.login
     })
     const selectedLogin = selected[0].login;
-    if(this.state.selectedUser === selectedLogin){
+    if(this.state.selectedUser === selectedLogin) {
       this.setState({
         selectedUser: false,
         followers: [],
@@ -62,7 +62,7 @@ class OrganisationList extends React.Component {
       })
 
     OrgsService.getFollow(selectedLogin,"followers")
-      .then(data=>{
+      .then(data => {
         if(data.length === 0) {
           data = ""
         };
@@ -71,7 +71,7 @@ class OrganisationList extends React.Component {
       .catch((error) => ["it's error"]);
 
     OrgsService.getFollow(selectedLogin,"following")
-      .then(data=>{
+      .then(data => {
         if(data.length === 0) {
           data = ""
         };
@@ -80,49 +80,37 @@ class OrganisationList extends React.Component {
       .catch((error) => ["it's error"]);
   }
 
-  renderFollowers = () => {
-    if(!Array.isArray(this.state.followers)){
+  renderFollow = (follow) => {
+    if(!Array.isArray(follow)) {
       return <p>{this.notFound}</p>
     }
-    if(this.state.followers.length === 0){
+    if(follow.length === 0) {
       return <p>{this.searching}</p>  
     }
-    return this.state.followers.map((person, i)=>{
-      return <p key={i}>{person.name}</p> 
-    })
-  }
-
-  renderFollows = () => {
-    if(!Array.isArray(this.state.follows)){
-      return <p>{this.notFound}</p>
-    }
-    if(this.state.follows.length === 0){
-      return <p>{this.searching}</p> 
-    }
-    return this.state.follows.map((person, i)=>{
-      return <p key={i}>{person.name}</p> 
+    return follow.map((person, i) => {
+      return <p key={person.id + i}>{person.login}</p> 
     })
   }
 
   renderMembers = () => {
     const {members} = this.state;
-    if(!Array.isArray(members)){
+    if(!Array.isArray(members)) {
       return <p>{this.notFound}</p>
     }
-    if(members.length === 0){
+    if(members.length === 0) {
      return <p>{this.searching}</p> 
     }
-    return members.map((member, i)=>{
+    return members.map((member, i) => {
       return (
         <div  className="member"
-              key={i}>
+              key={member.id + i}>
           <div className="member_main">
             <img alt="member avatar" 
                  className="member_avatar"
                  src={member.avatar_url}></img>
             <p onClick={this.handleSelectUser}
                className="member_name">
-              {member.name || member.login}
+              {member.login}
             </p>
           </div>
           {(this.state.selectedUser &&
@@ -131,12 +119,12 @@ class OrganisationList extends React.Component {
               <div className="member_followers"> 
                 <h4> followers:
                 </h4> 
-                {this.renderFollowers()}
+                {this.renderFollow(this.state.followers)}
               </div>
               <div> 
                 <h4> follows:
                 </h4> 
-                {this.renderFollows()}
+                {this.renderFollow(this.state.follows)}
               </div>
             </div>
           ):(" ")}
@@ -157,22 +145,24 @@ class OrganisationList extends React.Component {
           {searchedOrgs[0].message}
         </p>
     )}
-    if(searchedOrgs.length === 0){
+    if(searchedOrgs.length === 0) {
       return <p>{this.notFound}</p> 
     }
     return searchedOrgs.map((org, i ) => {
       return (
         <div className="organisation"
-             key={i} >
+             key={org.id + i} >
           <h2 className="organisation__name"
               onClick={this.handleSelect}>
-            {org.name || org.login}
+            {org.login}
           </h2>
           {(this.state.selectedOrg &&
            this.state.selectedOrg === org.login)?(
             <div className="org__info">
-              <p className="org_description">{org.description}</p>
-              <div>
+              <p className="org_description">
+              {org.description}
+              </p>
+              <div className="members">
                 <h3>Members :
                 </h3>
                 {this.renderMembers()}
