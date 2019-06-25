@@ -8,8 +8,8 @@ class OrganisationList extends React.Component {
       selectedOrg: false,
       members: [],
       selectedUser: false,
-      followers: [],
-      follows: []
+      followers: false,
+      follows: false
     }
     this.notFound = "Sorry, i can't find";
     this.searching = "Sorry, i'm searching";
@@ -24,6 +24,9 @@ class OrganisationList extends React.Component {
       this.setState({
         selectedOrg: false,
         members: [],
+        selectedUser: false,
+        followers: false,
+        follows: false
       })
       return;
     }
@@ -50,30 +53,45 @@ class OrganisationList extends React.Component {
     if(this.state.selectedUser === selectedLogin) {
       this.setState({
         selectedUser: false,
-        followers: [],
-        follows: []
+        followers: false,
+        follows: false
       })
       return;
     }
     this.setState({
         selectedUser: selectedLogin,
-        followers: [],
-        follows: []
+        followers: false,
+        follows: false
       })
+  }
 
-    OrgsService.getFollow(selectedLogin,"followers")
+  hanndleFollowers = (event) => {
+    if(this.state.followers) {
+      this.setState({ followers: false })
+      return;
+    }
+
+    OrgsService.getFollow(this.state.selectedUser,"followers")
       .then(data => {
         if(data.length === 0) {
-          data = ""
+          data = true
         };
         this.setState({ followers: data })
       })
       .catch((error) => ["it's error"]);
+      event.target.nextSibling.textContent = this.searching
+  }
 
-    OrgsService.getFollow(selectedLogin,"following")
+  hanndleFollows = (event) => {
+    if(this.state.follows) {
+      this.setState({ follows: false })
+      return;
+    }
+
+    OrgsService.getFollow(this.state.selectedUser,"following")
       .then(data => {
         if(data.length === 0) {
-          data = ""
+          data = true
         };
         this.setState({ follows: data })
       })
@@ -83,9 +101,6 @@ class OrganisationList extends React.Component {
   renderFollow = (follow) => {
     if(!Array.isArray(follow)) {
       return <p>{this.notFound}</p>
-    }
-    if(follow.length === 0) {
-      return <p>{this.searching}</p>  
     }
     return follow.map((person, i) => {
       return <p key={person.id + i}>{person.login}</p> 
@@ -108,7 +123,7 @@ class OrganisationList extends React.Component {
             <img alt="member avatar" 
                  className="member_avatar"
                  src={member.avatar_url}></img>
-            <p className="member_name"
+            <p className="member_name click"
               onClick={this.handleSelectUser}>
               {member.login}
             </p>
@@ -117,14 +132,22 @@ class OrganisationList extends React.Component {
           this.state.selectedUser === member.login)?(
             <div className="member_info">
               <div className="member_followers"> 
-                <h4> followers:
+                <h4 className="member_followers click"
+                    onClick={this.hanndleFollowers}>
+                  followers:
                 </h4> 
-                {this.renderFollow(this.state.followers)}
+                  {this.state.followers?
+                    (this.renderFollow(this.state.followers))
+                    :("")}
               </div>
               <div> 
-                <h4> follows:
+                <h4 className="member_follows click"
+                    onClick={this.hanndleFollows}>
+                  follows:
                 </h4> 
-                {this.renderFollow(this.state.follows)}
+                  {this.state.follows?
+                    (this.renderFollow(this.state.follows))
+                    :("")}
               </div>
             </div>
           ):(" ")}
@@ -152,7 +175,7 @@ class OrganisationList extends React.Component {
       return (
         <div className="organisation"
              key={org.id + i} >
-          <h2 className="organisation__name"
+          <h2 className="organisation__name click"
               onClick={this.handleSelect}>
             {org.login}
           </h2>

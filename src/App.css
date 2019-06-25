@@ -1,5 +1,6 @@
 * {
   box-sizing: border-box;
+  cursor: default;
 }
 
 body {
@@ -53,6 +54,10 @@ body {
   margin: 3px;
 }
 
+.click {
+  cursor: pointer;
+}
+
 input[type="text"] {
   margin: 5px 5px 15px;
   padding: 5px;
@@ -60,4 +65,5 @@ input[type="text"] {
   background-color: white;
   border: 1px solid silver;
   border-radius: 4px;
+  cursor: text;
 }
