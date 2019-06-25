@@ -108,8 +108,8 @@ class OrganisationList extends React.Component {
             <img alt="member avatar" 
                  className="member_avatar"
                  src={member.avatar_url}></img>
-            <p onClick={this.handleSelectUser}
-               className="member_name">
+            <p className="member_name"
+              onClick={this.handleSelectUser}>
               {member.login}
             </p>
           </div>

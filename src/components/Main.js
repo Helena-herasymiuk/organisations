@@ -28,7 +28,6 @@ class Main extends React.Component {
   };
 
   render(){ 
-  console.log(new Date(1561468780*1000)) 
 	  return(
 		  <main className="main">
         <Search handleSearch={this.debounceEvent(this.handleSearch, 500)}/>
