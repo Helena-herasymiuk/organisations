@@ -183,7 +183,7 @@ class OrganisationList extends React.Component {
            this.state.selectedOrg === org.login)?(
             <div className="org__info">
               <p className="org_description">
-              {org.description}
+              {org.description || "Description could be here" }
               </p>
               <div className="members">
                 <h3>Members :
