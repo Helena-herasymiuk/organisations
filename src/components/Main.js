@@ -7,10 +7,7 @@ import utils from './utils'
 class Main extends React.Component {
   constructor() {
     super();
-    this.state={
-      orgs: [],
-      searchedOrgs: []
-    }
+    this.state={ searchedOrgs: false }
 	}
 
   debounceEvent(...args) {
@@ -21,27 +18,17 @@ class Main extends React.Component {
     }
   }
 
-  componentDidMount() {
-    OrgsService.getAll()
-      .then(data => {
-        this.setState({ orgs: data })
-      });
-  }
-
   handleSearch = (event) => {
     const value =  event.target.value.toLowerCase();
-    const filtredOrgs = this.state.orgs.filter((org) => {
-      return org.login.toLowerCase().includes(value);
-    });
-
-    OrgsService.getAllDetails(filtredOrgs)
+    OrgsService.searchOrg(value)
       .then(data => {
         this.setState({ searchedOrgs: data })
       })
-      .catch((error) => []);
+      .catch((error) => ["it's error"]);
   };
 
-  render(){   
+  render(){ 
+  console.log(new Date(1561468780*1000)) 
 	  return(
 		  <main className="main">
         <Search handleSearch={this.debounceEvent(this.handleSearch, 500)}/>
