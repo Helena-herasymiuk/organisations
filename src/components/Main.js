@@ -1,8 +1,8 @@
 import React from 'react';
-import Search from './main/Search'
-import OrganisationList from './main/OrganisationList'
-import OrgsService from './service'
-import utils from './utils'
+import Search from './main/Search';
+import OrganisationList from './main/OrganisationList';
+import OrgsService from './service';
+import utils from './utils';
 
 class Main extends React.Component {
   constructor() {

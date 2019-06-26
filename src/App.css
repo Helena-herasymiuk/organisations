@@ -4,7 +4,7 @@
 }
 
 body {
-  background-color: #FAFBFC;
+  background-color: #fafbfc;
 }
 
 .App {
@@ -21,7 +21,7 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items:  center;
+  align-items: center;
 }
 
 .organisations,

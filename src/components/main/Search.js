@@ -1,15 +1,15 @@
-import React from 'react';
+import React from 'react'
 
-function Search(props) {
-	return(
-		<div className="search"> 
-		  <h1> Search </h1>
+function Search (props) {
+  return (
+    <div className="search">
+      <h1> Search </h1>
       <input type="text"
-             onChange={props.handleSearch}
-             autoFocus>
+        onChange={props.handleSearch}
+        autoFocus>
       </input>
-		</div>
-	)
+    </div>
+  )
 }
 
-export default Search;
+export default Search
